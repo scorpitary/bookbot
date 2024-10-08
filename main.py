@@ -3,8 +3,10 @@ def main():
     text = get_book_text(book_path)
     word_count = count_words(text)
     character_count = count_characters(text)
-    print(word_count)
-    print(character_count)
+    character_count.sort(key=sort_on, reverse=True)
+    print(f"{word_count} words found in this document")
+    for item in character_count:
+        print(f"the character {item['char']} was found {item['count']} times")
 
 def get_book_text(path):
     with open(path) as f:
@@ -16,16 +18,20 @@ def count_words(text):
 
 def count_characters(text):
     lower_case = text.lower()
-    characters = list(lower_case)
-    character_count = {}
-    for c in characters:
-        if c in character_count:
-            character_count[c] += 1
-        else:
-            character_count[c] = 1
-    return character_count
+    char = list(lower_case)
+    char_count = {}
+    char_list = []
+    for c in char:
+        if c.isalpha():
+            char_count[c] = char_count.get(c, 0) + 1
 
+    for char, count in char_count.items():
+        char_list.append({"char": char, "count": count})
+    return char_list
 
-
+def sort_on(dict):
+    return dict["count"]
+    
+    char_list.sort(key=sort_on, reverse=True)
 
 main()
